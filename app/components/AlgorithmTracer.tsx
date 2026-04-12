@@ -154,7 +154,7 @@ export default function AlgorithmTracer() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-white">
-              アルゴリズム・トレーサー
+              お前も基本情報技術者にならないか？
             </h1>
             <p className="text-sm text-gray-400 mt-1">
               基本情報技術者試験 科目B対策 - Pythonコードをステップ実行して変数の変化を可視化

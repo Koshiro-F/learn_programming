@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "アルゴリズム・トレーサー - 基本情報技術者試験対策",
-  description: "Pythonコードをステップ実行して変数の変化を可視化する学習ツール",
+  title: "KFの基本情報技術者試験対策サイト",
+  description: "基本情報技術者試験対策サイト",
 };
 
 export default function RootLayout({
