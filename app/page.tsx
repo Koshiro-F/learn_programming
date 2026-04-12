@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { questions } from './data/questions';
 import { QuestionCategory, QuestionDifficulty } from './types';
+import { getCharacterByIndex } from './lib/characters';
 
 export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<QuestionCategory | 'all'>('all');
@@ -93,14 +95,25 @@ export default function Home() {
 
         {/* 問題一覧 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredQuestions.map((question) => (
+          {filteredQuestions.map((question, index) => (
             <Link
               key={question.id}
               href={`/questions/${question.id}`}
-              className="block bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors p-6 group"
+              className="block bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors p-6 group relative overflow-hidden"
             >
+              {/* キャラクターアイコン（右下） */}
+              <div className="absolute bottom-2 right-2 w-20 h-20 opacity-30 group-hover:opacity-50 transition-opacity">
+                <Image
+                  src={getCharacterByIndex(index)}
+                  alt="character"
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                />
+              </div>
+
               {/* ヘッダー */}
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between mb-3 relative z-10">
                 <div className="flex-1">
                   <h3 className="text-lg font-bold group-hover:text-blue-400 transition-colors mb-2">
                     {question.title}

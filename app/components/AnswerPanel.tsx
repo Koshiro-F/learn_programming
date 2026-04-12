@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Choice } from '../types';
+import { getRandomCharacters } from '../lib/characters';
 
 interface AnswerPanelProps {
   choices: Choice[];
@@ -18,6 +20,15 @@ export default function AnswerPanel({
 }: AnswerPanelProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [correctChar, setCorrectChar] = useState<string>('');
+  const [incorrectChar, setIncorrectChar] = useState<string>('');
+
+  // クライアントサイドでのみキャラクターを設定（Hydrationエラー回避）
+  useEffect(() => {
+    const [correct, incorrect] = getRandomCharacters(2);
+    setCorrectChar(correct);
+    setIncorrectChar(incorrect);
+  }, []);
 
   const handleSubmit = () => {
     if (!selectedAnswer) return;
@@ -139,13 +150,26 @@ export default function AnswerPanel({
       {/* 結果と解説 */}
       {isSubmitted && (
         <div
-          className={`p-3 rounded border ${
+          className={`p-3 rounded border relative overflow-hidden ${
             isCorrect
               ? 'bg-green-900/30 border-green-600'
               : 'bg-red-900/30 border-red-600'
           }`}
         >
-          <div className="flex items-center gap-2 mb-2">
+          {/* キャラクター画像 */}
+          {(isCorrect ? correctChar : incorrectChar) && (
+            <div className="absolute top-0 right-0 w-20 h-20 opacity-20">
+              <Image
+                src={isCorrect ? correctChar : incorrectChar}
+                alt="character"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 mb-2 relative z-10">
             {isCorrect ? (
               <>
                 <svg
