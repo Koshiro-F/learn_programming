@@ -4,13 +4,19 @@
 
 export const characters = [
   '/starrail/boothil01.webp',
+  '/starrail/fainon01.webp',
+  '/starrail/hanabi01.webp',
   '/starrail/hotaru01.webp',
+  '/starrail/jeido01.webp',
   '/starrail/myurion01.webp',
   '/starrail/pam01.webp',
+  '/starrail/pam02.webp',
   '/starrail/reishio01.webp',
   '/starrail/robin01.webp',
   '/starrail/sei01.webp',
   '/starrail/shinazu01.webp',
+  '/starrail/teiun01.webp',
+  '/starrail/triby01.webp',
 ] as const;
 
 /**
