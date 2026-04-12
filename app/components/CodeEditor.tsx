@@ -134,6 +134,7 @@ export default function CodeEditor({
             minHeight: '100%',
           }}
           textareaClassName="editor-textarea"
+          ignoreTabKey={false}
         />
       </div>
     </div>

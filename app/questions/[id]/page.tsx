@@ -161,7 +161,7 @@ export default function QuestionPage({ params }: PageProps) {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900">
+    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
       {/* ヘッダー */}
       <header className="bg-gray-800 border-b border-gray-700 px-6 py-4">
         <div className="flex items-center justify-between">
