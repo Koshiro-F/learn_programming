@@ -1,15 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { questions } from './data/questions';
 import { QuestionCategory, QuestionDifficulty } from './types';
 import { getCharacterByIndex } from './lib/characters';
+import { AnswerHistoryMap, readAnswerHistory } from './lib/answerHistory';
 
 export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<QuestionCategory | 'all'>('all');
   const [difficultyFilter, setDifficultyFilter] = useState<QuestionDifficulty | 'all'>('all');
+  const [answerHistory, setAnswerHistory] = useState<AnswerHistoryMap>({});
+
+  useEffect(() => {
+    const syncHistory = () => setAnswerHistory(readAnswerHistory());
+    syncHistory();
+
+    window.addEventListener('focus', syncHistory);
+    return () => window.removeEventListener('focus', syncHistory);
+  }, []);
 
   // フィルタリング
   const filteredQuestions = questions.filter((q) => {
@@ -91,6 +101,11 @@ export default function Home() {
               {filteredQuestions.length} 問
             </p>
           </div>
+          <div className="flex items-end">
+            <p className="text-gray-400 text-sm">
+              回答済み: {Object.keys(answerHistory).length} 問
+            </p>
+          </div>
         </div>
 
         {/* 問題一覧 */}
@@ -101,6 +116,27 @@ export default function Home() {
               href={`/questions/${question.id}`}
               className="block bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors p-6 group relative overflow-hidden"
             >
+              {answerHistory[question.id] && (
+                <div className="absolute top-3 right-3 z-20">
+                  <div
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
+                      answerHistory[question.id].lastIsCorrect
+                        ? 'bg-green-900/70 text-green-300 border border-green-600/70'
+                        : 'bg-yellow-900/70 text-yellow-300 border border-yellow-600/70'
+                    }`}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    回答済み
+                  </div>
+                </div>
+              )}
+
               {/* キャラクターアイコン（右下） */}
               <div className="absolute bottom-2 right-2 w-20 h-20 opacity-30 group-hover:opacity-50 transition-opacity">
                 <Image
@@ -163,9 +199,14 @@ export default function Home() {
 
               {/* 解答群数 */}
               <div className="mt-4 pt-4 border-t border-gray-700">
-                <p className="text-xs text-gray-500">
-                  解答群: {question.choices.length}択
-                </p>
+                <div className="flex items-center justify-between gap-2 text-xs text-gray-500">
+                  <p>解答群: {question.choices.length}択</p>
+                  {answerHistory[question.id] && (
+                    <p>
+                      {answerHistory[question.id].correctCount}/{answerHistory[question.id].attempts}
+                    </p>
+                  )}
+                </div>
               </div>
             </Link>
           ))}

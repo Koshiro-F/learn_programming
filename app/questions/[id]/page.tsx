@@ -10,6 +10,7 @@ import ControlPanel from '../../components/ControlPanel';
 import AnswerPanel from '../../components/AnswerPanel';
 import { ExecutionState, TraceStep } from '../../types';
 import { initPyodide, executeWithTrace } from '../../lib/pyodideEngine';
+import { recordAnswer } from '../../lib/answerHistory';
 
 interface PageProps {
   params: Promise<{
@@ -120,6 +121,13 @@ export default function QuestionPage({ params }: PageProps) {
     setError('');
     setState('idle');
   }, []);
+
+  const handleAnswerSubmit = useCallback(
+    (isCorrect: boolean) => {
+      recordAnswer(question.id, isCorrect);
+    },
+    [question.id]
+  );
 
   // キーボードショートカット
   useEffect(() => {
@@ -258,6 +266,7 @@ export default function QuestionPage({ params }: PageProps) {
               choices={question.choices}
               correctAnswer={question.correctAnswer}
               explanation={question.explanation}
+              onAnswerSubmit={handleAnswerSubmit}
             />
           </div>
         </div>
