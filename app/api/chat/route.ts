@@ -64,9 +64,26 @@ export async function POST(request: NextRequest) {
   try {
     const { messages, context } = await request.json();
 
+    // デバッグ用：環境変数の存在確認（本番環境用）
+    const hasApiKey = !!process.env.OPENAI_API_KEY;
+    const keyPrefix = process.env.OPENAI_API_KEY?.substring(0, 10) || 'なし';
+
+    console.log('[DEBUG] API Key exists:', hasApiKey);
+    console.log('[DEBUG] API Key prefix:', keyPrefix);
+    console.log('[DEBUG] Environment:', process.env.NODE_ENV);
+
     if (!process.env.OPENAI_API_KEY) {
+      console.error('[ERROR] OPENAI_API_KEY is not set');
       return NextResponse.json(
-        { error: 'API key not configured' },
+        {
+          error: 'API key not configured',
+          debug: {
+            hasKey: hasApiKey,
+            environment: process.env.NODE_ENV,
+            // セキュリティのため、キーの最初の数文字のみ
+            keyPrefix: keyPrefix
+          }
+        },
         { status: 500 }
       );
     }
