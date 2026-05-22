@@ -1,14 +1,15 @@
 'use client';
 
-import React, { use, useState, useEffect, useCallback } from 'react';
+import React, { use, useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getQuestionById } from '../../data/questions';
 import CodeEditor from '../../components/CodeEditor';
-import VariableMonitor from '../../components/VariableMonitor';
+import RightPanel from '../../components/RightPanel';
+import FloatingChatButton from '../../components/FloatingChatButton';
 import ControlPanel from '../../components/ControlPanel';
 import AnswerPanel from '../../components/AnswerPanel';
-import { ExecutionState, TraceStep } from '../../types';
+import { ExecutionState, TraceStep, ChatContext } from '../../types';
 import { initPyodide, executeWithTrace } from '../../lib/pyodideEngine';
 import { recordAnswer } from '../../lib/answerHistory';
 
@@ -30,6 +31,7 @@ export default function QuestionPage({ params }: PageProps) {
   const [output, setOutput] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isPyodideReady, setIsPyodideReady] = useState(false);
+  const [activeTab, setActiveTab] = useState<'variables' | 'chat'>('variables');
 
   // 問題が見つからない場合
   if (!question) {
@@ -168,6 +170,19 @@ export default function QuestionPage({ params }: PageProps) {
     }
   };
 
+  // チャットコンテキストの構築
+  const chatContext = useMemo((): ChatContext => ({
+    questionId: question.id,
+    questionTitle: question.title,
+    questionDescription: question.description,
+    currentCode: code,
+    executionOutput: output || undefined,
+    executionError: error || undefined,
+    currentStep: steps.length > 0 ? currentStep : undefined,
+    totalSteps: steps.length || undefined,
+    currentVariables: steps.length > 0 ? currentVariables : undefined,
+  }), [question, code, output, error, currentStep, steps, currentVariables]);
+
   return (
     <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
       {/* ヘッダー */}
@@ -293,10 +308,13 @@ export default function QuestionPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* 変数モニター */}
-            <div className="w-96">
-              <VariableMonitor variables={currentVariables} />
-            </div>
+            {/* 右パネル (変数モニター + チャット) */}
+            <RightPanel
+              variables={currentVariables}
+              chatContext={chatContext}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
           </div>
 
           {/* 下: コントロールパネル */}
@@ -313,6 +331,11 @@ export default function QuestionPage({ params }: PageProps) {
           />
         </div>
       </div>
+
+      {/* 浮いたチャットボタン */}
+      <FloatingChatButton
+        onClick={() => setActiveTab('chat')}
+      />
     </div>
   );
 }

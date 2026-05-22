@@ -48,3 +48,37 @@ export interface Question {
   correctAnswer: string;           // 正解の選択肢ID (例: "イ")
   explanation: string;             // 解説文
 }
+
+// チャット機能の型定義
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
+
+export interface ChatContext {
+  questionId: string;
+  questionTitle: string;
+  questionDescription: string;
+  currentCode: string;
+  executionOutput?: string;
+  executionError?: string;
+  currentStep?: number;
+  totalSteps?: number;
+  currentVariables?: Record<string, unknown>;
+}
+
+export interface ChatRequest {
+  messages: Array<{ role: string; content: string }>;
+  context: ChatContext;
+}
+
+export interface ChatResponse {
+  message: string;
+  usage?: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
