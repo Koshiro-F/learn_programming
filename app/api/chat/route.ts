@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
+// Node.js runtimeを明示的に指定（Edge Runtimeでは環境変数が読み込めない場合がある）
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 const BASE_SYSTEM_PROMPT = `あなたは基本情報技術者試験(FE)の科目B(アルゴリズム)を学習する初心者を支援するAIアシスタントです。
 
 【このアプリの使い方】
