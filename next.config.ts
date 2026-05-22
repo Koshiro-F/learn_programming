@@ -8,10 +8,8 @@ const nextConfig: NextConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
 
-  // または experimental.serverComponentsExternalPackages を使用
-  experimental: {
-    serverComponentsExternalPackages: ['openai'],
-  },
+  // OpenAIパッケージをサーバー側で外部化（Next.js 16の新しい設定）
+  serverExternalPackages: ['openai'],
 };
 
 export default nextConfig;

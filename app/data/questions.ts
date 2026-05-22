@@ -600,6 +600,944 @@ for row in result:
     correctAnswer: 'エ',
     explanation: '無向グラフでは、辺 (u, v) は u→v と v→u の両方向を意味します。したがって隣接行列では [u][v] と [v][u] の両方に 1 をセットする必要があります。',
   },
+
+  // ===== カテゴリ①: プログラムの基本要素（オリジナル問題） =====
+
+  {
+    id: 'orig_cat1_q1',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '繰返し処理・合計計算',
+    difficulty: '初級',
+    title: '偶数の合計計算',
+    description: `次のプログラムを実行すると出力される値はどれか。
+
+このプログラムは1から10までの偶数の合計を計算します。`,
+    pseudoCode: `整数型: i, sum ← 0
+for (i を 1 から 10 まで 1 ずつ増やす)
+  if (i mod 2 ＝ 0)
+    sum ← sum ＋ i
+  endif
+endfor
+sumの値を出力する`,
+    pythonCode: `sum_val = 0
+for i in range(1, 11):
+    if i % 2 == 0:
+        sum_val = sum_val + i
+print(sum_val)`,
+    choices: [
+      { id: 'ア', text: '25' },
+      { id: 'イ', text: '28' },
+      { id: 'ウ', text: '30' },
+      { id: 'エ', text: '55' },
+      { id: 'オ', text: '60' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: '1〜10の偶数（2, 4, 6, 8, 10）の合計は 2+4+6+8+10 = 30 です。',
+  },
+
+  {
+    id: 'orig_cat1_q2',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'do-while・後判定繰返し',
+    difficulty: '初級',
+    title: 'do-while文のトレース',
+    description: `次のプログラムを実行すると、\`count\` の値はいくつになるか。
+
+do-while文は条件判定が後にあるため、最低1回は実行されます。`,
+    pseudoCode: `整数型: n ← 1
+整数型: count ← 0
+do
+  n ← n × 2
+  count ← count ＋ 1
+while (n ＜ 100)
+countの値を出力する`,
+    pythonCode: `n = 1
+count = 0
+while True:
+    n = n * 2
+    count = count + 1
+    if not (n < 100):
+        break
+print(count)`,
+    choices: [
+      { id: 'ア', text: '5' },
+      { id: 'イ', text: '6' },
+      { id: 'ウ', text: '6' },
+      { id: 'エ', text: '7' },
+      { id: 'オ', text: '8' },
+    ],
+    correctAnswer: 'エ',
+    explanation: 'nの値は 2→4→8→16→32→64→128 と変化し、n≧100となった時点でループを抜けます。したがってcount = 7です。',
+  },
+
+  {
+    id: 'orig_cat1_q3',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '多重ループ・九九テーブル',
+    difficulty: '初級',
+    title: '多重ループの条件判定',
+    description: `次のプログラム中の **空欄部分** に入れる正しい答えを選べ。
+
+このプログラムは、\`i×j\` の値が20以上になる組み合わせを数えます。`,
+    pseudoCode: `整数型: i, j, count ← 0
+for (i を 1 から 9 まで 1 ずつ増やす)
+  for (j を 1 から 9 まで 1 ずつ増やす)
+    if ( [空欄] )
+      count ← count ＋ 1
+    endif
+  endfor
+endfor
+countの値を出力する`,
+    pythonCode: `count = 0
+for i in range(1, 10):
+    for j in range(1, 10):
+        if ___BLANK___:  # ここに正しい条件式を入れる
+            count = count + 1
+print(count)`,
+    choices: [
+      { id: 'ア', text: 'i * j <= 20' },
+      { id: 'イ', text: 'i * j >= 20' },
+      { id: 'ウ', text: 'i + j >= 20' },
+      { id: 'エ', text: 'i * j == 20' },
+      { id: 'オ', text: 'i * j > 20' },
+    ],
+    correctAnswer: 'イ',
+    explanation: '「20以上になる組み合わせを数える」ので、条件は `i * j >= 20` が正しいです。',
+  },
+
+  {
+    id: 'orig_cat1_q4',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '配列の最大値探索・穴埋め',
+    difficulty: '初級',
+    title: '配列の最大値を求める関数',
+    description: `関数 \`find_max\` は整数のリストを受け取り、その最大値を返します。
+
+プログラム中の **空欄a** と **空欄b** に入れる正しい組み合わせを選べ。`,
+    pseudoCode: `○整数型: findMax(整数型の配列: arr)
+  整数型: i, maxVal
+  maxVal ← arr[1]
+  for (i を 2 から arrの要素数 まで 1 ずつ増やす)
+    if ( [空欄a] )
+      [空欄b]
+    endif
+  endfor
+  return maxVal`,
+    pythonCode: `def find_max(arr):
+    max_val = arr[0]
+    for i in range(1, len(arr)):
+        if ___BLANK_A___:  # 空欄a
+            ___BLANK_B___  # 空欄b
+    return max_val
+
+# テスト
+print(find_max([3, 7, 2, 9, 1]))  # 期待値: 9`,
+    choices: [
+      { id: 'ア', text: '空欄a: arr[i] < max_val, 空欄b: max_val = arr[i]' },
+      { id: 'イ', text: '空欄a: arr[i] < max_val, 空欄b: i = i + 1' },
+      { id: 'ウ', text: '空欄a: arr[i] > max_val, 空欄b: max_val = arr[i]' },
+      { id: 'エ', text: '空欄a: arr[i] == max_val, 空欄b: max_val = arr[i]' },
+      { id: 'オ', text: '空欄a: arr[i] != max_val, 空欄b: max_val = arr[i]' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: '最大値を更新するには「現在の要素がmax_valより大きい場合」に「max_valを現在の要素で上書き」する必要があります。',
+  },
+
+  {
+    id: 'orig_cat1_q5',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '関数・素数判定',
+    difficulty: '中級',
+    title: '素数判定関数',
+    description: `関数 \`is_prime\` は正の整数 n を受け取り、n が素数なら \`True\`、そうでなければ \`False\` を返します。
+
+プログラム中の **空欄部分** に入れる正しい答えを選べ。`,
+    pseudoCode: `○論理型: isPrime(整数型: n)
+  整数型: i
+  if (n ≦ 1)
+    return false
+  endif
+  for (i を 2 から [空欄] まで 1 ずつ増やす)
+    if (n mod i ＝ 0)
+      return false
+    endif
+  endfor
+  return true`,
+    pythonCode: `import math
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, ___BLANK___ + 1):  # 空欄部分
+        if n % i == 0:
+            return False
+    return True
+
+# テスト
+print(is_prime(17))  # 期待値: True
+print(is_prime(18))  # 期待値: False`,
+    choices: [
+      { id: 'ア', text: 'n' },
+      { id: 'イ', text: 'n ÷ 2 の商' },
+      { id: 'ウ', text: 'n ÷ 2 の商 + 1' },
+      { id: 'エ', text: 'n - 1' },
+      { id: 'オ', text: 'n の平方根の小数点以下切捨て値' },
+    ],
+    correctAnswer: 'オ',
+    explanation: '素数判定は √n 以下の数で割り切れるかを確認すれば十分です。n = a × b とすると、a と b のどちらかは必ず √n 以下になるためです。',
+  },
+
+  {
+    id: 'orig_cat1_q6',
+    source: 'original_cat1',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '論理演算・ビット演算基礎',
+    difficulty: '初級',
+    title: 'ビット論理積（AND）',
+    description: `次の記述中の **空欄部分** に入れる正しい答えを選べ。
+
+プログラムを実行すると、変数 \`result\` の値は **空欄** になります。`,
+    pseudoCode: `整数型: a ← 12   // 2進数: 00001100
+整数型: b ← 10   // 2進数: 00001010
+整数型: result
+result ← a and b   // ビット単位の論理積
+resultの値を出力する`,
+    pythonCode: `a = 12  # 2進数: 00001100
+b = 10  # 2進数: 00001010
+result = a & b  # ビット単位の論理積
+print(result)`,
+    choices: [
+      { id: 'ア', text: '2' },
+      { id: 'イ', text: '8' },
+      { id: 'ウ', text: '14' },
+      { id: 'エ', text: '22' },
+      { id: 'オ', text: '6' },
+    ],
+    correctAnswer: 'イ',
+    explanation: `ビット論理積の計算：
+  00001100 (12)
+AND 00001010 (10)
+= 00001000 (8)`,
+  },
+
+  // ===== カテゴリ②: データ構造及びアルゴリズム（オリジナル問題） =====
+
+  {
+    id: 'orig_cat2_q1',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'スタック・トレース',
+    difficulty: '初級',
+    title: 'スタック操作のトレース',
+    description: `クラス \`Stack\` を使った手続を実行したとき、最後に出力される値はどれか。
+
+スタックはLIFO（後入れ先出し）構造です。`,
+    pseudoCode: `クラス Stack の仕様:
+- Stack(): 空のスタック生成
+- push(n): nをスタックに積む
+- pop(): スタックの一番上の値を取り出して返す
+
+手続:
+Stack: s ← Stack()
+s.push(3)
+s.push(7)
+s.push(1)
+s.pop()          // 戻り値は使用しない
+s.push(5)
+s.push(2)
+s.pop()          // 戻り値は使用しない
+s.pop()の戻り値を出力する`,
+    pythonCode: `# ===== Stack クラス（問題を解く上で注目する必要はありません） =====
+class Stack:
+    def __init__(self):
+        self.items = []
+    def push(self, item):
+        self.items.append(item)
+    def pop(self):
+        return self.items.pop()
+    def is_empty(self):
+        return len(self.items) == 0
+# ===== 以上、補助クラス =====
+
+s = Stack()
+s.push(3)
+s.push(7)
+s.push(1)
+s.pop()       # 1を取り出し（使用しない）
+s.push(5)
+s.push(2)
+s.pop()       # 2を取り出し（使用しない）
+print(s.pop())  # 最後のpopの戻り値を出力`,
+    choices: [
+      { id: 'ア', text: '1' },
+      { id: 'イ', text: '2' },
+      { id: 'ウ', text: '5' },
+      { id: 'エ', text: '7' },
+      { id: 'オ', text: '3' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `操作トレース:
+1. push(3) → [3]
+2. push(7) → [3,7]
+3. push(1) → [3,7,1]
+4. pop() → [3,7]（1を取り出し）
+5. push(5) → [3,7,5]
+6. push(2) → [3,7,5,2]
+7. pop() → [3,7,5]（2を取り出し）
+8. pop() → 5 を出力`,
+  },
+
+  {
+    id: 'orig_cat2_q2',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'キュー・FIFO・トレース',
+    difficulty: '初級',
+    title: 'キュー操作のトレース',
+    description: `クラス \`Queue\` を使った手続のトレース。
+
+キューはFIFO（先入れ先出し）構造です。`,
+    pseudoCode: `クラス Queue の仕様:
+- Queue(): 空のキュー生成
+- enqueue(s): sをキューの末尾に追加
+- dequeue(): キューの先頭から取り出して返す
+- size(): キュー内の要素数を返す
+
+手続:
+Queue: q ← Queue()
+q.enqueue("X")
+q.enqueue("Y")
+q.enqueue("Z")
+q.dequeue()           // 戻り値は使用しない
+q.enqueue("W")
+while (q.size() が 0 と等しくない)
+  q.dequeue() の戻り値を出力
+endwhile`,
+    pythonCode: `# ===== Queue クラス（問題を解く上で注目する必要はありません） =====
+class Queue:
+    def __init__(self):
+        self.items = []
+    def enqueue(self, item):
+        self.items.append(item)
+    def dequeue(self):
+        return self.items.pop(0)
+    def size(self):
+        return len(self.items)
+# ===== 以上、補助クラス =====
+
+q = Queue()
+q.enqueue("X")
+q.enqueue("Y")
+q.enqueue("Z")
+q.dequeue()  # Xを取り出し（使用しない）
+q.enqueue("W")
+while q.size() != 0:
+    print(q.dequeue(), end=", " if q.size() > 0 else "")
+print()  # 改行`,
+    choices: [
+      { id: 'ア', text: 'X, Y, Z, W' },
+      { id: 'イ', text: 'Z, Y, X, W' },
+      { id: 'ウ', text: 'W, Z, Y' },
+      { id: 'エ', text: 'Y, Z, W' },
+      { id: 'オ', text: 'X, W, Z' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `操作トレース:
+1. enqueue("X") → [X]
+2. enqueue("Y") → [X,Y]
+3. enqueue("Z") → [X,Y,Z]
+4. dequeue() → [Y,Z]（Xを取り出し）
+5. enqueue("W") → [Y,Z,W]
+6. whileで順に出力: Y → Z → W`,
+  },
+
+  {
+    id: 'orig_cat2_q3',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '再帰・フィボナッチ数列',
+    difficulty: '中級',
+    title: 'フィボナッチ数列（再帰）',
+    description: `関数 \`fib\` はフィボナッチ数列の第n項を返します。
+
+\`fib(6)\` を呼び出したとき、戻り値はいくつか。`,
+    pseudoCode: `○整数型: fib(整数型: n)
+  if (n ≦ 1)
+    return n
+  endif
+  return fib(n－1) ＋ fib(n－2)`,
+    pythonCode: `def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+# テスト
+print(fib(6))  # 期待値は？`,
+    choices: [
+      { id: 'ア', text: '5' },
+      { id: 'イ', text: '7' },
+      { id: 'ウ', text: '8' },
+      { id: 'エ', text: '13' },
+      { id: 'オ', text: '21' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `フィボナッチ数列: 0, 1, 1, 2, 3, 5, 8, 13, 21...
+fib(0)=0, fib(1)=1, fib(2)=1, fib(3)=2, fib(4)=3, fib(5)=5, fib(6)=8`,
+  },
+
+  {
+    id: 'orig_cat2_q4',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'バブルソート・トレース',
+    difficulty: '中級',
+    title: 'バブルソートのトレース',
+    description: `次のバブルソートのプログラムを \`data = [5, 2, 8, 1, 4]\` で実行したとき、外側ループが \`i = 2\` を終えた時点での配列の状態はどれか。`,
+    pseudoCode: `○bubbleSort(整数型の配列: data)
+  整数型: i, j, tmp
+  for (i を 1 から data の要素数－1 まで 1 ずつ増やす)
+    for (j を 1 から data の要素数－i まで 1 ずつ増やす)
+      if (data[j] ＞ data[j＋1])
+        tmp ← data[j]
+        data[j] ← data[j＋1]
+        data[j＋1] ← tmp
+      endif
+    endfor
+  endfor`,
+    pythonCode: `def bubble_sort(data):
+    n = len(data)
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if data[j] > data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
+    return data
+
+# テスト（i=2まで実行した状態を確認）
+data = [5, 2, 8, 1, 4]
+# i=0（1回目）終了後の状態を確認
+# i=1（2回目）終了後の状態を確認
+print(bubble_sort(data.copy()))  # 完全ソート結果`,
+    choices: [
+      { id: 'ア', text: '[1, 2, 4, 5, 8]' },
+      { id: 'イ', text: '[2, 1, 4, 5, 8]' },
+      { id: 'ウ', text: '[1, 2, 5, 4, 8]' },
+      { id: 'エ', text: '[2, 4, 1, 5, 8]' },
+      { id: 'オ', text: '[1, 4, 2, 5, 8]' },
+    ],
+    correctAnswer: 'イ',
+    explanation: `i=1終了後: [2, 5, 1, 4, 8] → 最大値8が末尾に確定
+i=2終了後: [2, 1, 4, 5, 8] → 2番目に大きい5が末尾2番目に確定`,
+  },
+
+  {
+    id: 'orig_cat2_q5',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '二分探索・穴埋め',
+    difficulty: '中級',
+    title: '二分探索の穴埋め',
+    description: `昇順に整列された配列から二分探索で値を探す関数 \`binary_search\` の穴埋め。
+
+**空欄a** と **空欄b** に入れる正しい組み合わせを選べ。`,
+    pseudoCode: `○整数型: binarySearch(整数型の配列: data, 整数型: target)
+  整数型: low ← 1
+  整数型: high ← dataの要素数
+  整数型: mid
+  while (low ≦ high)
+    mid ← (low ＋ high) ÷ 2 の商
+    if (data[mid] ＝ target)
+      return mid
+    elseif (data[mid] ＜ target)
+      low ← [空欄a]
+    else
+      high ← [空欄b]
+    endif
+  endwhile
+  return －1`,
+    pythonCode: `def binary_search(data, target):
+    low = 0
+    high = len(data) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if data[mid] == target:
+            return mid
+        elif data[mid] < target:
+            low = ___BLANK_A___  # 空欄a
+        else:
+            high = ___BLANK_B___  # 空欄b
+    return -1
+
+# テスト
+print(binary_search([1, 3, 5, 7, 9], 7))  # 期待値: 3（インデックス）`,
+    choices: [
+      { id: 'ア', text: '空欄a: mid, 空欄b: mid' },
+      { id: 'イ', text: '空欄a: mid, 空欄b: mid - 1' },
+      { id: 'ウ', text: '空欄a: mid + 1, 空欄b: mid' },
+      { id: 'エ', text: '空欄a: mid + 1, 空欄b: mid - 1' },
+      { id: 'オ', text: '空欄a: mid - 1, 空欄b: mid + 1' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `- data[mid] < target（目標値は右半分）→ low = mid + 1（midは既に確認済み）
+- data[mid] > target（目標値は左半分）→ high = mid - 1（midは既に確認済み）`,
+  },
+
+  {
+    id: 'orig_cat2_q6',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '連結リスト・要素追加',
+    difficulty: '中級',
+    title: '連結リストの先頭に要素を追加',
+    description: `単方向リストの先頭に要素を追加する手続 \`insert_head\` の穴埋め。
+
+**空欄a** と **空欄b** に入れる正しい組み合わせを選べ。`,
+    pseudoCode: `クラス Node のメンバ変数:
+- val（文字型）
+- next（Node型、次の要素の参照）
+
+大域: Node: listHead  // リストの先頭要素
+
+○insertHead(文字型: newVal)
+  Node: newNode ← 新しい Node のインスタンス
+  newNode.val ← newVal
+  newNode.next ← [空欄a]
+  [空欄b] ← newNode`,
+    pythonCode: `# ===== Node クラス（問題を解く上で注目する必要はありません） =====
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+# ===== 以上、補助クラス =====
+
+list_head = None
+
+def insert_head(new_val):
+    global list_head
+    new_node = Node(new_val)
+    new_node.next = ___BLANK_A___  # 空欄a
+    ___BLANK_B___ = new_node       # 空欄b
+
+# テスト
+insert_head('A')
+insert_head('B')
+# リスト: B -> A`,
+    choices: [
+      { id: 'ア', text: '空欄a: 未定義の値, 空欄b: list_head.next' },
+      { id: 'イ', text: '空欄a: list_head.next, 空欄b: list_head' },
+      { id: 'ウ', text: '空欄a: list_head, 空欄b: list_head' },
+      { id: 'エ', text: '空欄a: 未定義の値, 空欄b: list_head' },
+      { id: 'オ', text: '空欄a: list_head, 空欄b: list_head.next' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `1. 新ノードの next に現在の先頭(list_head)を設定
+2. list_head を新ノードで上書き
+→ 新ノードが先頭となり、旧先頭は新ノードのnextに連結されます。`,
+  },
+
+  {
+    id: 'orig_cat2_q7',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '二分探索木・挿入とトレース',
+    difficulty: '中級',
+    title: '二分探索木の走査順序',
+    description: `二分探索木に値を挿入する手続を使い、空の木に \`[5, 3, 7, 1, 4]\` の順に挿入したとき、根から先行順（前順: 根→左→右）でたどると出力される順序はどれか。
+
+挿入後の木の構造:
+\`\`\`
+      5
+     / \\
+    3   7
+   / \\
+  1   4
+\`\`\``,
+    pythonCode: `# ===== TreeNode クラス（問題を解く上で注目する必要はありません） =====
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def insert_bst(root, val):
+    if root is None:
+        return TreeNode(val)
+    if val < root.val:
+        root.left = insert_bst(root.left, val)
+    else:
+        root.right = insert_bst(root.right, val)
+    return root
+
+def preorder(root):
+    if root:
+        print(root.val, end=", ")
+        preorder(root.left)
+        preorder(root.right)
+# ===== 以上、補助クラス =====
+
+root = None
+for val in [5, 3, 7, 1, 4]:
+    root = insert_bst(root, val)
+
+preorder(root)  # 先行順（前順）で出力
+print()`,
+    choices: [
+      { id: 'ア', text: '5, 3, 1, 4, 7（先行順・前順）' },
+      { id: 'イ', text: '1, 3, 4, 5, 7（中順・昇順）' },
+      { id: 'ウ', text: '1, 4, 3, 7, 5（後行順・後順）' },
+      { id: 'エ', text: '5, 7, 3, 4, 1' },
+      { id: 'オ', text: '3, 1, 4, 5, 7' },
+    ],
+    correctAnswer: 'ア',
+    explanation: `- 先行順（前順）: 根→左→右 → 5,3,1,4,7
+- 中順（間順）: 左→根→右 → 1,3,4,5,7（昇順になる）
+- 後行順（後順）: 左→右→根 → 1,4,3,7,5`,
+  },
+
+  {
+    id: 'orig_cat2_q8',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'クイックソート・再帰・穴埋め',
+    difficulty: '上級',
+    title: 'クイックソートの穴埋め',
+    description: `クイックソートの関数 \`quick_sort\` の穴埋め（**空欄a**, **空欄b**）。
+
+ピボットは配列の先頭要素とします。`,
+    pseudoCode: `○quickSort(整数型の配列: data, 整数型: left, 整数型: right)
+  整数型: i, j, pivot, tmp
+  if (left ≧ right)
+    return
+  endif
+  pivot ← data[left]
+  i ← left ＋ 1
+  j ← right
+  while (i ≦ j)
+    while (i ≦ right and data[i] ≦ pivot)
+      i ← i ＋ 1
+    endwhile
+    while (j ≧ left ＋ 1 and data[j] ≧ pivot)
+      j ← j － 1
+    endwhile
+    if (i ＜ j)
+      tmp ← data[i]; data[i] ← data[j]; data[j] ← tmp
+    endif
+  endwhile
+  tmp ← data[left]; data[left] ← data[j]; data[j] ← tmp
+  quickSort(data, [空欄a], j－1)
+  quickSort(data, j＋1, [空欄b])`,
+    pythonCode: `def quick_sort(data, left, right):
+    if left >= right:
+        return
+    pivot = data[left]
+    i = left + 1
+    j = right
+    while i <= j:
+        while i <= right and data[i] <= pivot:
+            i += 1
+        while j >= left + 1 and data[j] >= pivot:
+            j -= 1
+        if i < j:
+            data[i], data[j] = data[j], data[i]
+    data[left], data[j] = data[j], data[left]
+    quick_sort(data, ___BLANK_A___, j - 1)  # 空欄a
+    quick_sort(data, j + 1, ___BLANK_B___)  # 空欄b
+
+# テスト
+data = [5, 2, 8, 1, 4]
+quick_sort(data, 0, len(data) - 1)
+print(data)  # 期待値: [1, 2, 4, 5, 8]`,
+    choices: [
+      { id: 'ア', text: '空欄a: left, 空欄b: j' },
+      { id: 'イ', text: '空欄a: left, 空欄b: right' },
+      { id: 'ウ', text: '空欄a: left + 1, 空欄b: right' },
+      { id: 'エ', text: '空欄a: j + 1, 空欄b: right' },
+      { id: 'オ', text: '空欄a: left, 空欄b: right - 1' },
+    ],
+    correctAnswer: 'イ',
+    explanation: `ピボットが data[j] に配置された後:
+- 左サブ配列: data[left] 〜 data[j-1] → quick_sort(data, left, j-1)
+- 右サブ配列: data[j+1] 〜 data[right] → quick_sort(data, j+1, right)`,
+  },
+
+  {
+    id: 'orig_cat2_q9',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '文字列処理・パリンドローム（回文）判定',
+    difficulty: '中級',
+    title: '回文（パリンドローム）判定',
+    description: `関数 \`is_palindrome\` は文字列が回文（前から読んでも後ろから読んでも同じ）なら \`True\`、そうでなければ \`False\` を返します。
+
+プログラム中の **空欄部分** に入れる正しい答えを選べ。`,
+    pseudoCode: `○論理型: isPalindrome(文字列型: str)
+  整数型: i, len
+  len ← strの文字数
+  for (i を 1 から len ÷ 2 の商 まで 1 ずつ増やす)
+    if ( [空欄] )
+      return false
+    endif
+  endfor
+  return true`,
+    pythonCode: `def is_palindrome(s):
+    length = len(s)
+    for i in range(length // 2):
+        if ___BLANK___:  # 空欄部分
+            return False
+    return True
+
+# テスト
+print(is_palindrome("racecar"))  # 期待値: True
+print(is_palindrome("hello"))    # 期待値: False`,
+    choices: [
+      { id: 'ア', text: 's[i] == s[length - i]' },
+      { id: 'イ', text: 's[i] == s[length - i + 1]' },
+      { id: 'ウ', text: 's[i] != s[length - i]' },
+      { id: 'エ', text: 's[i] != s[length - i - 1]' },
+      { id: 'オ', text: 's[i] != s[length // 2]' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `例: "racecar"（length=7）
+- i=0: 0文字目 'r' と 6文字目 'r' を比較 → length-i-1 = 6
+- i=1: 1文字目 'a' と 5文字目 'a' を比較 → length-i-1 = 5
+不一致なら回文でないので False を返します。`,
+  },
+
+  {
+    id: 'orig_cat2_q10',
+    source: 'original_cat2',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'バグ発見・選択ソート',
+    difficulty: '中級',
+    title: '選択ソートのバグ発見',
+    description: `次の選択ソートのプログラムには不具合があります。どのような入力を与えると問題が発生するか。
+
+**バグの説明**: 外側forループの上限が \`len(data)\` になっていますが、正しくは \`len(data) - 1\` であるべきです。`,
+    pseudoCode: `○selectionSort(整数型の配列: data)
+  整数型: i, j, minIdx, tmp
+  for (i を 1 から data の要素数 まで 1 ずつ増やす)   // ← バグ
+    minIdx ← i
+    for (j を i＋1 から dataの要素数 まで 1 ずつ増やす)
+      if (data[j] ＜ data[minIdx])
+        minIdx ← j
+      endif
+    endfor
+    tmp ← data[i]; data[i] ← data[minIdx]; data[minIdx] ← tmp
+  endfor`,
+    pythonCode: `def selection_sort(data):
+    n = len(data)
+    # バグ: range(n) ではなく range(n-1) が正しい
+    for i in range(n):  # ← ここがバグ
+        min_idx = i
+        for j in range(i + 1, n):
+            if data[j] < data[min_idx]:
+                min_idx = j
+        data[i], data[min_idx] = data[min_idx], data[i]
+    return data
+
+# テスト
+print(selection_sort([3, 1, 4, 1, 5]))`,
+    choices: [
+      { id: 'ア', text: '要素数が1の配列' },
+      { id: 'イ', text: '既に昇順にソートされた配列' },
+      { id: 'ウ', text: 'すべての要素が同じ値の配列' },
+      { id: 'エ', text: '要素数が偶数の配列' },
+      { id: 'オ', text: 'このバグは実際には結果に影響しない' },
+    ],
+    correctAnswer: 'オ',
+    explanation: `最後のi = n-1の時、内側forループは range(n, n) となり0回実行されるため、data[i] と data[min_idx]（= data[i]）の交換が発生しますが結果は変わりません。
+→ 実は最終回の処理は常に自己交換で結果に影響しません。`,
+  },
+
+  // ===== カテゴリ③: プログラミングの諸分野への適用（オリジナル問題） =====
+
+  {
+    id: 'orig_cat3_q1',
+    source: 'original_cat3',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: 'ハッシュ法・チェーン法',
+    difficulty: '上級',
+    title: 'ハッシュ表のインデックス計算',
+    description: `ハッシュ表を使ったデータ格納のプログラム穴埋め。
+
+ハッシュ関数は \`key mod tableSize\` とし、衝突時はチェーン法で処理します。
+
+プログラム中の **空欄部分** に入れる正しい答えを選べ。
+
+**注意**: 配列の要素番号は1始まりです。`,
+    pseudoCode: `整数型: tableSize ← 7
+整数型配列: table ← {tableSize 個の -1}  // -1は未使用を示す
+
+○整数型: hashSearch(整数型: key)
+  整数型: idx
+  idx ← [空欄]
+  if (table[idx] ＝ key)
+    return idx
+  endif
+  return -1
+
+○hashInsert(整数型: key)
+  整数型: idx
+  idx ← [空欄]
+  table[idx] ← key`,
+    pythonCode: `table_size = 7
+table = [-1] * table_size  # -1は未使用を示す（インデックス0始まり）
+
+def hash_search(key):
+    idx = ___BLANK___  # 空欄部分（Pythonは0始まりなので+1は不要）
+    if table[idx] == key:
+        return idx
+    return -1
+
+def hash_insert(key):
+    idx = ___BLANK___  # 空欄部分（Pythonは0始まりなので+1は不要）
+    table[idx] = key
+
+# テスト
+hash_insert(14)  # 14 mod 7 = 0
+hash_insert(8)   # 8 mod 7 = 1
+print(table)`,
+    choices: [
+      { id: 'ア', text: 'key ÷ table_size の商' },
+      { id: 'イ', text: 'key + table_size' },
+      { id: 'ウ', text: 'key % table_size + 1（1始まりのため+1）' },
+      { id: 'エ', text: 'key % table_size' },
+      { id: 'オ', text: 'key * table_size % 7' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `Pythonでは配列インデックスは0始まりなので、\`key % table_size\` でインデックスを計算します。
+擬似言語では1始まりの場合 \`key mod tableSize + 1\` となりますが、Pythonでは \`key % table_size\` です。`,
+  },
+
+  {
+    id: 'orig_cat3_q2',
+    source: 'original_cat3',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '統計処理・中央値・パーセンタイル',
+    difficulty: '上級',
+    title: '中央値（メジアン）の計算',
+    description: `昇順にソートされた配列から中央値（メジアン）を返す関数 \`median\` の穴埋め（**空欄a**, **空欄b**）。
+
+要素数が偶数の場合は中央2つの平均値、奇数の場合は中央の値を返します。`,
+    pseudoCode: `○実数型: median(整数型の配列: sortedData)
+  整数型: n ← sortedDataの要素数
+  if ( [空欄a] )
+    return (sortedData[n ÷ 2] ＋ sortedData[n ÷ 2 ＋ 1]) ÷ 2.0
+  else
+    return [空欄b]
+  endif`,
+    pythonCode: `def median(sorted_data):
+    n = len(sorted_data)
+    if ___BLANK_A___:  # 空欄a
+        # 偶数の場合：中央2つの平均
+        return (sorted_data[n // 2 - 1] + sorted_data[n // 2]) / 2.0
+    else:
+        # 奇数の場合：中央の値
+        return ___BLANK_B___  # 空欄b
+
+# テスト
+print(median([1, 2, 3, 4]))     # 期待値: 2.5（偶数）
+print(median([1, 2, 3, 4, 5]))  # 期待値: 3（奇数）`,
+    choices: [
+      { id: 'ア', text: '空欄a: n % 2 == 0, 空欄b: sorted_data[n // 2]' },
+      { id: 'イ', text: '空欄a: n % 2 == 0, 空欄b: sorted_data[n // 2 + 1]' },
+      { id: 'ウ', text: '空欄a: n % 2 != 0, 空欄b: sorted_data[n // 2]' },
+      { id: 'エ', text: '空欄a: n % 2 == 1, 空欄b: sorted_data[(n + 1) // 2]' },
+      { id: 'オ', text: '空欄a: n % 2 == 0, 空欄b: sorted_data[n // 2]' },
+    ],
+    correctAnswer: 'オ',
+    explanation: `- 偶数（n=4）: [1,2,3,4] → (2+3)/2 = 2.5
+  - インデックス: n//2-1=1番目と n//2=2番目の平均
+- 奇数（n=5）: [1,2,3,4,5] → 中央は2番目（インデックス）
+  - インデックス: n//2 = 2番目`,
+  },
+
+  {
+    id: 'orig_cat3_q3',
+    source: 'original_cat3',
+    year: 2025,
+    category: 'アルゴリズム',
+    subcategory: '文字列圧縮（ランレングス符号化）',
+    difficulty: '上級',
+    title: 'ランレングス符号化',
+    description: `ランレングス符号化（連続する同じ文字を「文字+回数」で表現）を行う関数 \`rle\` の穴埋め。
+
+例: \`"AAABBC"\` → \`"A3B2C1"\`
+
+**空欄a** と **空欄b** に入れる正しい組み合わせを選べ。`,
+    pseudoCode: `○文字列型: rle(文字列型: str)
+  文字列型: result ← ""
+  整数型: i ← 1, count ← 1
+  文字型: current
+  if (strの文字数 ＝ 0)
+    return result
+  endif
+  current ← strの1文字目
+  for (i を 2 から strの文字数 まで 1 ずつ増やす)
+    if ( [空欄a] )
+      count ← count ＋ 1
+    else
+      result ← result ＋ current ＋ count を文字列に変換した値
+      [空欄b]
+    endif
+  endfor
+  result ← result ＋ current ＋ count を文字列に変換した値
+  return result`,
+    pythonCode: `def rle(s):
+    if len(s) == 0:
+        return ""
+
+    result = ""
+    current = s[0]
+    count = 1
+
+    for i in range(1, len(s)):
+        if ___BLANK_A___:  # 空欄a
+            count += 1
+        else:
+            result += current + str(count)
+            ___BLANK_B___  # 空欄b
+
+    # 最後の文字を追加
+    result += current + str(count)
+    return result
+
+# テスト
+print(rle("AAABBC"))  # 期待値: "A3B2C1"
+print(rle("AAA"))     # 期待値: "A3"`,
+    choices: [
+      { id: 'ア', text: '空欄a: s[i] != current, 空欄b: current = s[i]; count = 1' },
+      { id: 'イ', text: '空欄a: s[i] == current, 空欄b: current = s[i]; count = 1' },
+      { id: 'ウ', text: '空欄a: s[i] == current, 空欄b: count = 1' },
+      { id: 'エ', text: '空欄a: count > 1, 空欄b: current = s[i]; count = 0' },
+      { id: 'オ', text: '空欄a: s[i] == current, 空欄b: current = s[i - 1]; count = 1' },
+    ],
+    correctAnswer: 'イ',
+    explanation: `- 同じ文字が続く場合: count を増やす（空欄a: s[i] == current）
+- 違う文字が来た場合: 現在の current と count を result に追加し、current と count をリセット（空欄b: current = s[i]; count = 1）`,
+  },
 ];
 
 /**

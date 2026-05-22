@@ -31,7 +31,7 @@ export interface Choice {
 
 export type QuestionCategory = 'アルゴリズム' | '情報セキュリティ';
 export type QuestionDifficulty = '初級' | '中級' | '上級';
-export type QuestionSource = 'r06' | 'sample';
+export type QuestionSource = 'r06' | 'sample' | 'original_cat1' | 'original_cat2' | 'original_cat3';
 
 export interface Question {
   id: string;                      // 例: "algo_r06_q1"
