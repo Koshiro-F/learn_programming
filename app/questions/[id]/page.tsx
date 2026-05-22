@@ -289,16 +289,16 @@ export default function QuestionPage({ params }: PageProps) {
         {/* 右: コードエディタ + 変数モニター + コントロールパネル */}
         <div className="flex-1 flex flex-col">
           {/* 上: コードエディタと変数モニター */}
-          <div className="flex-1 flex overflow-hidden">
+          <div className="flex-1 flex min-h-0">
             {/* コードエディタ */}
-            <div className="flex-1 border-r border-gray-700 flex flex-col">
-              <div className="bg-gray-800 px-4 py-2 text-white text-sm font-semibold border-b border-gray-700">
+            <div className="flex-1 border-r border-gray-700 flex flex-col min-h-0">
+              <div className="bg-gray-800 px-4 py-2 text-white text-sm font-semibold border-b border-gray-700 flex-shrink-0">
                 Pythonコード
                 <span className="text-gray-400 text-xs ml-2">
                   (Ctrl/Cmd + Enter で実行)
                 </span>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 overflow-auto min-h-0">
                 <CodeEditor
                   value={code}
                   onChange={setCode}
@@ -309,12 +309,14 @@ export default function QuestionPage({ params }: PageProps) {
             </div>
 
             {/* 右パネル (変数モニター + チャット) */}
-            <RightPanel
-              variables={currentVariables}
-              chatContext={chatContext}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
+            <div className="min-h-0 flex-shrink-0">
+              <RightPanel
+                variables={currentVariables}
+                chatContext={chatContext}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+            </div>
           </div>
 
           {/* 下: コントロールパネル */}

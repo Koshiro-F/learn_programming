@@ -15,9 +15,9 @@ interface RightPanelProps {
 export default function RightPanel({ variables, chatContext, activeTab, setActiveTab }: RightPanelProps) {
 
   return (
-    <div className="w-96 flex flex-col">
+    <div className="w-96 h-full flex flex-col">
       {/* Tab Buttons */}
-      <div className="bg-gray-800 border-b border-gray-700 flex">
+      <div className="bg-gray-800 border-b border-gray-700 flex flex-shrink-0">
         <button
           onClick={() => setActiveTab('variables')}
           className={`flex-1 px-4 py-2 font-semibold text-sm transition-colors border-b-2 ${
@@ -41,7 +41,7 @@ export default function RightPanel({ variables, chatContext, activeTab, setActiv
       </div>
 
       {/* Tab Content */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 min-h-0 overflow-auto">
         {activeTab === 'variables' ? (
           <VariableMonitor variables={variables} />
         ) : (

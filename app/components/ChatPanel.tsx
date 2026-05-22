@@ -76,9 +76,9 @@ export default function ChatPanel({ context }: ChatPanelProps) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-900 text-white">
+    <div className="h-full w-full flex flex-col bg-gray-900 text-white">
       {/* Header */}
-      <div className="bg-gray-800 px-4 py-2 border-b border-gray-700 flex items-center justify-between">
+      <div className="bg-gray-800 px-4 py-2 border-b border-gray-700 flex items-center justify-between flex-shrink-0">
         <span className="font-semibold">AI アシスタント</span>
         {messages.length > 0 && (
           <button
@@ -91,7 +91,7 @@ export default function ChatPanel({ context }: ChatPanelProps) {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-auto p-4 space-y-3">
+      <div className="flex-1 overflow-auto p-4 space-y-3 min-h-0">
         {messages.length === 0 ? (
           <WelcomeMessage onQuickAction={handleQuickAction} />
         ) : (
@@ -105,7 +105,7 @@ export default function ChatPanel({ context }: ChatPanelProps) {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-gray-700 p-3">
+      <div className="border-t border-gray-700 p-3 flex-shrink-0">
         <div className="flex gap-2">
           <textarea
             value={inputText}

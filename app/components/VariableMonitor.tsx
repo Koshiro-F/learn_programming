@@ -14,11 +14,11 @@ export default function VariableMonitor({
   const entries = Object.entries(variables);
 
   return (
-    <div className="h-full flex flex-col bg-gray-900 text-white">
-      <div className="bg-gray-800 px-4 py-2 font-semibold border-b border-gray-700">
+    <div className="h-full w-full flex flex-col bg-gray-900 text-white">
+      <div className="bg-gray-800 px-4 py-2 font-semibold border-b border-gray-700 flex-shrink-0">
         {title}
       </div>
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-4 min-h-0">
         {entries.length === 0 ? (
           <div className="text-gray-500 text-sm">
             変数はまだありません

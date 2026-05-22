@@ -38,7 +38,7 @@ export default function CodeEditor({
   }, [highlightLine]);
 
   return (
-    <div ref={editorRef} className="h-full overflow-auto bg-[#2d2d2d] relative">
+    <div ref={editorRef} className="h-full w-full overflow-auto bg-[#2d2d2d] relative">
       <style jsx global>{`
         .editor-container {
           font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
