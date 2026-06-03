@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 import ChatPanel from './ChatPanel';
 import AnswerPanel from './AnswerPanel';
 import { Question, ChatContext } from '../types';
@@ -33,17 +34,50 @@ export default function SecurityQuestionLayout({ question }: SecurityQuestionLay
   return (
     <div className="h-screen flex flex-col bg-gray-900 text-white">
       {/* ヘッダー */}
-      <header className="bg-gray-800 border-b border-gray-700 px-6 py-3 flex items-center justify-between flex-shrink-0">
-        <Link
-          href="/"
-          className="text-blue-400 hover:text-blue-300 transition-colors"
-        >
-          ← 問題一覧に戻る
-        </Link>
-        <h1 className="text-lg font-bold truncate flex-1 text-center mx-4">
-          {question.title}
-        </h1>
-        <div className="w-[120px]"></div> {/* 左右のバランス調整用 */}
+      <header className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </Link>
+            <div>
+              <div className="flex items-center gap-3 mb-1">
+                <h1 className="text-xl font-bold text-white">
+                  {question.title}
+                </h1>
+                <span
+                  className={`${getDifficultyColor(
+                    question.difficulty
+                  )} px-2 py-1 rounded text-xs font-semibold`}
+                >
+                  {question.difficulty}
+                </span>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-gray-400">
+                <span>{question.category}</span>
+                <span>•</span>
+                <span>{question.subcategory}</span>
+                <span>•</span>
+                <span>{question.year}年</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* メインコンテンツ */}
@@ -52,24 +86,9 @@ export default function SecurityQuestionLayout({ question }: SecurityQuestionLay
         <div className="flex-1 flex flex-col overflow-auto bg-gray-800 border-r border-gray-700">
           {/* 問題パネル */}
           <div className="p-6 space-y-4">
-            {/* カテゴリ・難易度バッジ */}
-            <div className="flex gap-2">
-              <span className="px-3 py-1 bg-purple-600 text-white text-sm rounded-full font-semibold">
-                {question.category}
-              </span>
-              <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
-                {question.subcategory}
-              </span>
-              <span className={`px-3 py-1 text-white text-sm rounded-full ${getDifficultyColor(question.difficulty)}`}>
-                {question.difficulty}
-              </span>
-            </div>
-
             {/* 問題文 */}
             <div className="prose prose-invert max-w-none">
-              <div className="whitespace-pre-wrap text-gray-200 leading-relaxed">
-                {question.description}
-              </div>
+              <ReactMarkdown>{question.description}</ReactMarkdown>
             </div>
 
             {/* 解答パネル（選択肢＋解答ボタン＋解説） */}

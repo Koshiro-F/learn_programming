@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ProblemPanelProps {
   title: string;
@@ -34,8 +35,8 @@ export default function ProblemPanel({
         {/* 問題文 */}
         <div className="mb-6">
           <h4 className="text-sm font-semibold text-gray-400 mb-2">問題文</h4>
-          <div className="text-gray-200 leading-relaxed whitespace-pre-wrap">
-            {description}
+          <div className="prose prose-invert max-w-none">
+            <ReactMarkdown>{description}</ReactMarkdown>
           </div>
         </div>
 
