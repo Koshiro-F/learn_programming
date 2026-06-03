@@ -1746,6 +1746,581 @@ print(f"行番号09の実行回数: {count_result}回")`,
 
 したがって、行番号09（prime[j] ← 1の実行）は22回実行されます。`,
   },
+  {
+    id: 'algo_r06_q5',
+    source: 'r06',
+    year: 2024,
+    category: 'アルゴリズム',
+    subcategory: '統計・関連度計算',
+    difficulty: '上級',
+    title: '商品関連度の計算',
+    description: `注文データから商品間の「関連度 Lxy」を計算する手続きのプログラム穴埋め（a, b, c の3箇所）。
+
+関連度は次の式で計算されます：
+\`\`\`
+Lxy = (Mxy × 全注文数) ÷ (Kx × Ky)
+\`\`\`
+
+注文データ例:
+| 注文番号 | 購入商品 |
+|---------|---------|
+| 1 | A, B, D |
+| 2 | A, D |
+| 3 | A |
+| 4 | A, B, E |
+| 5 | B |
+| 6 | C, E |
+
+例: LAB = (2×6)/(4×3) = 1.0
+
+プログラム中の **a**, **b**, **c** に入れる正しい組み合わせを選べ。`,
+    pythonCode: `# 注文データ
+orders = [
+    ['A', 'B', 'D'],
+    ['A', 'D'],
+    ['A'],
+    ['A', 'B', 'E'],
+    ['B'],
+    ['C', 'E']
+]
+
+def calc_relation(item1, item2):
+    # Kx: item1を含む注文数
+    # Ky: item2を含む注文数
+    # Mxy: item1とitem2を両方含む注文数
+    kx = sum(1 for order in orders if item1 in order)
+    ky = sum(1 for order in orders if item2 in order)
+    mxy = sum(1 for order in orders if item1 in order and item2 in order)
+
+    # 空欄a, b, c
+    # relation = (___a___ × ___c___) / (___b___ × ky)
+
+    # 正解: relation = (mxy × len(orders)) / (kx × ky)
+    relation = (mxy * len(orders)) / (kx * ky)
+    return relation
+
+# テスト
+print(f"LAB = {calc_relation('A', 'B')}")  # 期待値: 1.0`,
+    choices: [
+      { id: 'ア', text: 'a: arrayK[i], b: arrayM[i], c: allItemsの要素数' },
+      { id: 'イ', text: 'a: arrayK[i], b: arrayM[i], c: ordersの要素数' },
+      { id: 'ウ', text: 'a: arrayK[i], b: arrayM[i], c: otherItemsの要素数' },
+      { id: 'エ', text: 'a: arrayM[i], b: arrayK[i], c: allItemsの要素数' },
+      { id: 'オ', text: 'a: arrayM[i], b: arrayK[i], c: ordersの要素数' },
+      { id: 'カ', text: 'a: arrayM[i], b: arrayK[i], c: otherItemsの要素数' },
+    ],
+    correctAnswer: 'オ',
+    explanation: `関連度の計算式 Lxy = (Mxy × 全注文数) ÷ (Kx × Ky) から、空欄a=arrayM[i]（Mxy）、空欄b=arrayK[i]（Kx）、空欄c=ordersの要素数（全注文数）となります。`,
+  },
+  {
+    id: 'algo_sample_q6',
+    source: 'sample',
+    year: 2023,
+    category: 'アルゴリズム',
+    subcategory: 'ビット演算・シフト',
+    difficulty: '中級',
+    title: '8ビットのビット反転',
+    description: `関数 \`rev\` は8ビット型の引数 \`byte\` を受け取り、ビットの並びを逆にした値を返す。
+
+例: \`rev(01001011)\` → \`11010010\`
+
+演算子:
+- \`∧\`: ビット論理積
+- \`∨\`: ビット論理和
+- \`>>\`: 論理右シフト
+- \`<<\`: 論理左シフト
+
+プログラム中の **空欄** に入れる正しい答えを選べ。`,
+    pythonCode: `def rev(byte):
+    # Pythonでビット反転を実装
+    rbyte = byte
+    r = 0
+
+    for i in range(8):
+        # 正解: r = (r << 1) | (rbyte & 1)
+        #       rbyte = rbyte >> 1
+        r = (r << 1) | (rbyte & 1)
+        rbyte = rbyte >> 1
+
+    return r
+
+# テスト
+test_byte = 0b01001011  # 75
+result = rev(test_byte)
+print(f"入力: {test_byte:08b} ({test_byte})")
+print(f"出力: {result:08b} ({result})")  # 期待値: 11010010 (210)`,
+    choices: [
+      { id: 'ア', text: 'r ← (r << 1) ∨ (rbyte ∧ 00000001)\n   rbyte ← rbyte >> 1' },
+      { id: 'イ', text: 'r ← (r << 7) ∨ (rbyte ∧ 00000001)\n   rbyte ← rbyte >> 7' },
+      { id: 'ウ', text: 'r ← (rbyte << 1) ∨ (rbyte >> 7)\n   rbyte ← r' },
+      { id: 'エ', text: 'r ← (rbyte >> 1) ∨ (rbyte << 7)\n   rbyte ← r' },
+    ],
+    correctAnswer: 'ア',
+    explanation: `ビット反転は、元の値の最下位ビットを取り出し（rbyte ∧ 1）、結果を1ビット左シフトして追加（r << 1）し、元の値を右シフト（rbyte >> 1）することを繰り返します。`,
+  },
+  {
+    id: 'algo_sample_q8',
+    source: 'sample',
+    year: 2023,
+    category: 'アルゴリズム',
+    subcategory: '優先度付きキュー・トレース',
+    difficulty: '中級',
+    title: '優先度付きキューの操作',
+    description: `クラス \`PrioQueue\`（優先度付きキュー）を使った手続 \`prioSched\` のトレース。
+優先度は整数値1,2,3（小さい値ほど高優先）。
+
+**クラス仕様**
+| メソッド | 戻り値 | 説明 |
+|--------|--------|------|
+| \`PrioQueue()\` | - | 空のキュー生成 |
+| \`enqueue(s, prio)\` | なし | 優先度prio で s を追加 |
+| \`dequeue()\` | 文字列 | 最高優先度の要素を取り出す（同優先度は先入れ順） |
+| \`size()\` | 整数 | 格納要素数を返す |
+
+次の操作を実行した後、残りの要素を全て取り出したときの出力順序を選べ。`,
+    pythonCode: `# ===== PriorityQueue クラス（問題を解く上で注目する必要はありません） =====
+import heapq
+
+class PrioQueue:
+    def __init__(self):
+        self.heap = []
+        self.counter = 0  # 同優先度の場合の順序保持用
+
+    def enqueue(self, s, prio):
+        # (優先度, 挿入順, 値) のタプルでヒープに追加
+        heapq.heappush(self.heap, (prio, self.counter, s))
+        self.counter += 1
+
+    def dequeue(self):
+        if self.heap:
+            return heapq.heappop(self.heap)[2]
+        return None
+
+    def size(self):
+        return len(self.heap)
+# ===== 以上、補助クラス =====
+
+# テスト
+prioQueue = PrioQueue()
+prioQueue.enqueue("A", 1)
+prioQueue.enqueue("B", 2)
+prioQueue.enqueue("C", 2)
+prioQueue.enqueue("D", 3)
+prioQueue.dequeue()       # A を取り出し
+prioQueue.dequeue()       # B を取り出し
+prioQueue.enqueue("D", 3)
+prioQueue.enqueue("B", 2)
+prioQueue.dequeue()       # C を取り出し
+prioQueue.dequeue()       # B を取り出し
+prioQueue.enqueue("C", 2)
+prioQueue.enqueue("A", 1)
+
+# 残りをすべて出力
+result = []
+while prioQueue.size() > 0:
+    result.append(prioQueue.dequeue())
+print('", "'.join(result))`,
+    choices: [
+      { id: 'ア', text: '"A","B","C","D"' },
+      { id: 'イ', text: '"A","B","D","D"' },
+      { id: 'ウ', text: '"A","C","C","D"' },
+      { id: 'エ', text: '"A","C","D","D"' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `優先度付きキューのトレース：
+操作後のキュー: A(1), C(2), D(3), D(3)
+優先度順に取り出すと: A → C → D → D`,
+  },
+  {
+    id: 'algo_sample_q9',
+    source: 'sample',
+    year: 2023,
+    category: 'アルゴリズム',
+    subcategory: '木構造・中順走査',
+    difficulty: '中級',
+    title: '完全2分木の中順走査',
+    description: `手続 \`order(1)\` を呼び出したとき、14節の完全2分木をどの順に出力するか。
+
+木の構造は配列で表現され、\`tree[i]\` は節iの子ノードのリストを保持します。
+
+プログラムは根から再帰的にノードを訪問し、出力します。出力される順序を選べ。`,
+    pythonCode: `# ===== TreeNode クラス（問題を解く上で注目する必要はありません） =====
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+# ===== 以上、補助クラス =====
+
+# 木構造の配列表現（1-indexed）
+tree = [
+    None,  # 0番目は未使用
+    [2, 3], [4, 5], [6, 7], [8, 9], [10, 11], [12, 13], [14],
+    [], [], [], [], [], [], []
+]
+
+def order(n):
+    if n >= len(tree):
+        return
+
+    if len(tree[n]) == 2:
+        order(tree[n][0])
+        print(n, end=' ')
+        order(tree[n][1])
+    elif len(tree[n]) == 1:
+        order(tree[n][0])
+        print(n, end=' ')
+    else:
+        print(n, end=' ')
+
+# テスト
+order(1)
+print()  # 改行`,
+    choices: [
+      { id: 'ア', text: '1,2,3,4,5,6,7,8,9,10,11,12,13,14' },
+      { id: 'イ', text: '1,2,4,8,9,5,10,11,3,6,12,13,7,14' },
+      { id: 'ウ', text: '8,4,9,2,10,5,11,1,12,6,13,3,14,7' },
+      { id: 'エ', text: '8,9,4,10,11,5,2,12,13,6,14,7,3,1' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `中順走査（間順）は「左→根→右」の順で訪問します。完全2分木の中順走査により、8,4,9,2,10,5,11,1,12,6,13,3,14,7 の順で出力されます。`,
+  },
+  {
+    id: 'algo_sample_q10',
+    source: 'sample',
+    year: 2023,
+    category: 'アルゴリズム',
+    subcategory: '連結リスト・要素削除',
+    difficulty: '中級',
+    title: '単方向リストからの要素削除',
+    description: `単方向リストから指定位置の要素を削除する手続 \`delNode\` の穴埋め。
+
+**クラス ListElement**
+| メンバ変数 | 型 | 説明 |
+|-----------|-----|------|
+| \`val\` | 文字型 | 要素の値 |
+| \`next\` | ListElement | 次の要素の参照 |
+
+プログラム中の **空欄** に入れる正しい答えを選べ。`,
+    pythonCode: `# ===== Node クラス（問題を解く上で注目する必要はありません） =====
+class ListElement:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+# ===== 以上、補助クラス =====
+
+# グローバル変数（リストの先頭）
+listHead = None
+
+def delNode(pos):
+    global listHead
+
+    if pos == 1:
+        listHead = listHead.next
+    else:
+        prev = listHead
+        for i in range(2, pos):
+            prev = prev.next
+        # 空欄: prev.next.next
+        prev.next = prev.next.next
+
+# テスト用にリストを作成
+def create_list(values):
+    global listHead
+    if not values:
+        return
+    listHead = ListElement(values[0])
+    current = listHead
+    for val in values[1:]:
+        current.next = ListElement(val)
+        current = current.next
+
+def print_list():
+    current = listHead
+    result = []
+    while current:
+        result.append(current.val)
+        current = current.next
+    print(' -> '.join(result))
+
+# テスト
+create_list(['A', 'B', 'C', 'D', 'E'])
+print("削除前:", end=" ")
+print_list()
+delNode(3)  # 3番目の要素（C）を削除
+print("削除後:", end=" ")
+print_list()`,
+    choices: [
+      { id: 'ア', text: 'listHead' },
+      { id: 'イ', text: 'listHead.next' },
+      { id: 'ウ', text: 'listHead.next.next' },
+      { id: 'エ', text: 'prev' },
+      { id: 'オ', text: 'prev.next' },
+      { id: 'カ', text: 'prev.next.next' },
+    ],
+    correctAnswer: 'カ',
+    explanation: `pos番目の要素を削除するには、(pos-1)番目の要素の next を (pos+1)番目の要素に繋ぎ変えます。prev は (pos-1)番目を指しているので、prev.next = prev.next.next とすることで、pos番目の要素をスキップします。`,
+  },
+  {
+    id: 'sec_r06_q6',
+    source: 'r06',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: 'アクセス制御・テレワーク',
+    difficulty: '中級',
+    title: 'テレワーク環境のセキュリティ対策',
+    description: `A社（従業員450名の商社）のテレワーク環境に関するセキュリティ対策問題。
+
+**システム環境の概要**
+- 従業員に1台ずつ社内PCを貸与
+- SaaSとして「グループウェア（メール・チャット・クラウドストレージ）」と「オンライン会議サービス」を利用
+- テレワーク: 私有PCから社内PCへリモートデスクトップ接続（専用アプリ使用）
+- 専用アプリには保存禁止機能あり（私有PCへのファイルDL・C&P禁止）
+- A社利用クラウドサービスへのログインは**社内ネットワークからのみ**許可（IP制限）
+
+**問題の状況**
+テレワーク拡大により社内ネットワーク経由の通信量が激増。
+→ クラウドサービスへは社内ネットワークを介さず**直接接続**する設定変更を検討。
+→ セキュリティリーダーBさんが検討: 不正アクセスリスクが増加する。
+
+**設問**
+情報システム部に依頼する対策として最も適切なものを選べ。`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: '社内ネットワークからクラウドサービスへの通信を監視する' },
+      { id: 'イ', text: '社内ネットワークとクラウドサービス間の通信速度を制限する' },
+      { id: 'ウ', text: 'クラウドサービスへA社外から接続する際の認証に2要素認証を導入する' },
+      { id: 'エ', text: 'グループウェアだけを直接接続の対象とする' },
+      { id: 'オ', text: '専用アプリの保存禁止機能を無効にする' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `IP制限が外れることで不正アクセスリスクが上昇します。認証強化（2要素認証）が最も直接的な対策となります。IP制限に依存せず、ユーザー認証を強化することでセキュリティを維持できます。`,
+  },
+  {
+    id: 'sec_sample_q17',
+    source: 'sample',
+    year: 2023,
+    category: '情報セキュリティ',
+    subcategory: 'アクセス権限管理',
+    difficulty: '中級',
+    title: '外部委託時のアクセス権限設計',
+    description: `A社がB社に受注管理業務（Jシステムへの入力）を外部委託する際の操作権限設計問題。
+
+**登場人物**
+- A社販売担当者：Jシステムへの入力
+- A社販売責任者：入力内容の承認
+- B社販売担当者（新規）：Jシステムへの入力を担当
+- B社販売責任者（新規）：B社担当者の入力内容を口頭で差し戻し可能
+
+**要件**
+- 要求1: B社販売担当者にはJシステムへの入力権限が必要
+- 要求2: A社販売担当者の場合は引き続きA社販売責任者が承認
+
+**設問**
+最小権限の原則に基づき、各役割に適切な権限を付与する場合、最も適切な権限設計を選べ。`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'A社販売担当者・B社販売担当者に入力権限、A社販売責任者に承認権限を付与し、B社販売責任者には権限なし' },
+      { id: 'イ', text: 'A社販売担当者・B社販売担当者に入力権限、A社販売責任者・B社販売責任者の両方に承認権限を付与' },
+      { id: 'ウ', text: 'A社販売担当者・B社販売担当者に入力権限、A社販売責任者に承認権限、B社販売責任者に参照権限のみ付与' },
+      { id: 'エ', text: 'B社販売担当者のみに入力権限、B社販売責任者に承認権限を付与' },
+      { id: 'オ', text: 'すべての役割に入力・承認の両権限を付与' },
+      { id: 'カ', text: 'A社販売担当者・B社販売担当者に入力権限、A社販売責任者に承認権限を付与（B社販売責任者には参照権限も不要）' },
+    ],
+    correctAnswer: 'カ',
+    explanation: `最小権限の原則では、各役割に必要最低限の権限のみを付与します。B社販売責任者は口頭で差し戻しを行うため、システム上の権限は不要です。A社販売担当者とB社販売担当者には入力権限、A社販売責任者には承認権限を付与するのが適切です。`,
+  },
+  {
+    id: 'sec_sample_q20',
+    source: 'sample',
+    year: 2023,
+    category: '情報セキュリティ',
+    subcategory: 'ファイアウォール運用・職務分離',
+    difficulty: '中級',
+    title: 'ファイアウォールの運用管理',
+    description: `A社（従業員500名）のFW運用に関するセキュリティ問題。
+
+**現状**
+- 6名の運用担当者全員に全権限付与
+- FWルールの編集後、**同一担当者が**操作承認を実施（1人で編集・承認）
+- ログインにはパスワード認証のみ（8文字英数字）
+
+**内部監査での指摘**: 操作内容が改ざんされても検知が難しい
+
+**設問**
+最も適切な改善策を選べ。`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: '全運用担当者に同一IDを使用させる' },
+      { id: 'イ', text: 'FWログインに多要素認証を導入する' },
+      { id: 'ウ', text: 'コンソール/リモートでログインできる担当者を分ける' },
+      { id: 'エ', text: '運用担当者を1名に限定する' },
+      { id: 'オ', text: '一部の担当者を操作ログ確認のみにする' },
+      { id: 'カ', text: '編集を行う者と、操作ログ確認・承認を行う者を分け、最小権限を付与する' },
+    ],
+    correctAnswer: 'カ',
+    explanation: `職務分離（Segregation of Duties）の原則により、編集者と承認者を分離することで、不正な操作や改ざんを防ぐことができます。また、各担当者には必要最小限の権限のみを付与することで、セキュリティリスクを低減できます。`,
+  },
+  {
+    id: 'orig_sec_q1',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: 'マルウェア対策・インシデント対応',
+    difficulty: '中級',
+    title: 'マルウェア感染時の初動対応',
+    description: `A社の従業員Xさんが以下の状況に遭遇した。最も適切な初動対応はどれか。
+
+**状況**
+- Xさんが社内PCでメールを確認中、差出人不明のメールに添付されたzipファイルを開いた
+- 開封直後から社内PCの動作が著しく遅くなった
+- ウイルス対策ソフトのリアルタイム保護が無効になっていた
+- Xさんは現在、社内ネットワーク（LAN）に接続している`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'ウイルス対策ソフトを再インストールして全スキャンを実行する' },
+      { id: 'イ', text: '社内PCをシャットダウンしてから情報システム部に報告する' },
+      { id: 'ウ', text: '自分でzipファイルを削除して業務を継続する' },
+      { id: 'エ', text: '直ちに社内LANから切断（ネットワークケーブルを抜くかWi-Fi無効化）し、情報システム部に報告する' },
+      { id: 'オ', text: '上司に口頭で報告した後、しばらく様子を見る' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `マルウェア感染が疑われる場合の最優先は**横展開（ラテラルムーブメント）の防止**です。ネットワーク切断が最初にすべきアクションです。シャットダウンはフォレンジック証拠を消す可能性があるため二番目の対応となります。`,
+  },
+  {
+    id: 'orig_sec_q2',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: 'バックアップ・ランサムウェア対策',
+    difficulty: '中級',
+    title: 'ランサムウェア対策とバックアップ',
+    description: `B社では以下のバックアップ方針を採用している。ランサムウェア対策として最も効果的な改善策はどれか。
+
+**現状のバックアップ方針**
+- 毎日夜間に全データをNASにバックアップしている
+- NASは社内ネットワークに常時接続されている
+- バックアップデータのリストアテストは年1回実施`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'バックアップを1日2回に増やす' },
+      { id: 'イ', text: 'NASの容量を2倍に増強する' },
+      { id: 'ウ', text: 'バックアップの一部を社内ネットワークから切り離したメディア（オフラインバックアップ）に保存する' },
+      { id: 'エ', text: 'バックアップソフトウェアをバージョンアップする' },
+      { id: 'オ', text: 'リストアテストの頻度を年2回に増やす' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `ランサムウェアはネットワーク接続されたNASにも感染・暗号化する恐れがあります。3-2-1バックアップルール（3つのコピー、2種類の媒体、1つはオフサイト/オフライン）に従い、オフラインバックアップを保持することが有効です。`,
+  },
+  {
+    id: 'orig_sec_q3',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: '脆弱性管理・パッチ適用',
+    difficulty: '中級',
+    title: '重大な脆弱性への対応',
+    description: `C社の情報システム部が公開サーバのCVSSスコア9.8（Critical）の脆弱性を発見した。
+
+以下の選択肢の中で、最初に実施すべき対応として最も適切なものはどれか。`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: '一時的に対象サーバをネットワークから切り離すか、WAF等で当該脆弱性を悪用する通信をブロックする暫定対策を実施する' },
+      { id: 'イ', text: '次回の定期メンテナンス（3ヶ月後）にパッチを適用する' },
+      { id: 'ウ', text: 'ベンダーにパッチのリリース時期を問い合わせて待機する' },
+      { id: 'エ', text: '脆弱性スキャンツールを購入してから詳細調査する' },
+      { id: 'オ', text: 'セキュリティポリシーの改訂を先に行う' },
+    ],
+    correctAnswer: 'ア',
+    explanation: `CVSSスコア9.8はCritical（緊急）であり、悪用リスクが極めて高い状態です。パッチ適用前に暫定対策（ネットワーク遮断・WAFルール追加）を即時実施することが求められます。`,
+  },
+  {
+    id: 'orig_sec_q4',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: '初期設定・デフォルトパスワード',
+    difficulty: '中級',
+    title: '複合機のセキュリティ設定',
+    description: `D社では以下の環境でメールを運用している。セキュリティ上の問題として最も適切な指摘はどれか。
+
+**D社の環境**
+- 複合機から社内ファイルサーバへスキャン文書をメールで送信している
+- 複合機の送信元メールアドレスは出荷時のデフォルト設定（\`machine@vendor.example.com\`）のまま
+- ベンダーが公開しているマニュアルには複合機の初期ID・パスワードが記載されている
+- 複合機の管理画面にはデフォルトのパスワードでアクセス可能な状態が継続している`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'メールサーバのディスク容量が増加する' },
+      { id: 'イ', text: '複合機の管理画面に初期パスワードでログインされ、設定を変更・盗聴される恐れがある' },
+      { id: 'ウ', text: '複合機の電力消費が増加する' },
+      { id: 'エ', text: 'メールの送受信が遅延する' },
+      { id: 'オ', text: 'ファイルサーバへのアクセスログが取得できない' },
+    ],
+    correctAnswer: 'イ',
+    explanation: `初期設定のまま（デフォルトパスワード未変更）の複合機は、攻撃者が容易に管理画面にアクセスできます。これはIoT機器やネットワーク機器の「初期設定の放置」という典型的なセキュリティリスクです。`,
+  },
+  {
+    id: 'orig_sec_q5',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: 'ログ管理・監査',
+    difficulty: '中級',
+    title: 'ログ管理の改善点',
+    description: `E社の情報セキュリティ担当者が、ログ管理について以下の現状を整理した。
+
+改善すべき問題点として最も重要なものを選べ。
+
+**E社のログ管理の現状**
+1. Webサーバのアクセスログを30日間保存している
+2. ファイルサーバへのアクセスログを取得していない
+3. ログの保存先は同一サーバ上の別フォルダ
+4. ログのレビューは問題発生時のみ実施
+5. 管理者権限でのログイン記録は取得している`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'Webサーバのログ保存期間が30日と短い' },
+      { id: 'イ', text: 'ログのレビューが問題発生時のみである' },
+      { id: 'ウ', text: '管理者権限のログイン記録が冗長である' },
+      { id: 'エ', text: 'Webサーバのアクセスログの容量が増大する' },
+      { id: 'オ', text: '5つの現状はすべて適切である' },
+      { id: 'カ', text: 'ファイルサーバのアクセスログが取得されておらず、かつログが同一サーバ上に保存されている点が問題である' },
+    ],
+    correctAnswer: 'カ',
+    explanation: `
+- ファイルサーバのアクセスログ未取得 → 不正アクセスの検知・証跡が残らない
+- ログを同一サーバに保存 → 侵害時にログも改ざん・消去される恐れ（ログはリモート・専用サーバへ転送すべき）
+
+この2点が重大な問題です。`,
+  },
+  {
+    id: 'orig_sec_q6',
+    source: 'original_cat2',
+    year: 2024,
+    category: '情報セキュリティ',
+    subcategory: '物理セキュリティ・入退室管理',
+    difficulty: '初級',
+    title: 'サーバ室の物理セキュリティ',
+    description: `F社のサーバ室について、情報セキュリティ監査で指摘される可能性が最も高い問題はどれか。
+
+**F社のサーバ室の状況**
+- ICカードによる入退室管理を実施（入退室ログあり）
+- サーバ室の鍵を紛失した場合の手順書が整備されている
+- 清掃業者は監視なしでサーバ室に立ち入ることができる
+- 無停電電源装置（UPS）が設置されている
+- 空調設備が適切に稼働している`,
+    pythonCode: '',
+    choices: [
+      { id: 'ア', text: 'ICカードで管理しているためログが残り問題ない' },
+      { id: 'イ', text: 'UPSが設置されているため電源は安全である' },
+      { id: 'ウ', text: '清掃業者が監視なしで立ち入りできる点が問題である' },
+      { id: 'エ', text: '空調設備が稼働しており問題ない' },
+      { id: 'オ', text: '鍵紛失時の手順書があるため問題ない' },
+    ],
+    correctAnswer: 'ウ',
+    explanation: `物理セキュリティの原則として、重要区域（サーバ室）への立入りは最小権限が必要です。清掃業者等の第三者が監視なしで立入できる状態は、情報資産への物理的なリスクとなります（機器の持ち出し、USB差し込みなど）。`,
+  },
 ];
 
 /**
