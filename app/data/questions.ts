@@ -1719,18 +1719,18 @@ def primeNumber_with_count(n):
 count_result = primeNumber_with_count(25)
 print(f"行番号09の実行回数: {count_result}回")`,
     choices: [
-      { id: 'ア', text: '6' },
-      { id: 'イ', text: '9' },
-      { id: 'ウ', text: '11' },
-      { id: 'エ', text: '13' },
-      { id: 'オ', text: '15' },
-      { id: 'カ', text: '17' },
-      { id: 'キ', text: '22' },
-      { id: 'ク', text: '23' },
-      { id: 'ケ', text: '25' },
-      { id: 'コ', text: '27' },
+      { id: 'ア', text: '5' },
+      { id: 'イ', text: '6' },
+      { id: 'ウ', text: '9' },
+      { id: 'エ', text: '11' },
+      { id: 'オ', text: '13' },
+      { id: 'カ', text: '15' },
+      { id: 'キ', text: '17' },
+      { id: 'ク', text: '22' },
+      { id: 'ケ', text: '23' },
+      { id: 'コ', text: '25' },
     ],
-    correctAnswer: 'キ',
+    correctAnswer: 'ク',
     explanation: `primeNumber(25)を実行すると、m = 5となります。図2のアルゴリズムでは、iが素数（prime[i] == 0）の場合のみ内側のwhileループが実行されます。
 
 - i=2（素数）: j = 4, 6, 8, ..., 24 → 11回
