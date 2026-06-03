@@ -9,6 +9,7 @@ import RightPanel from '../../components/RightPanel';
 import FloatingChatButton from '../../components/FloatingChatButton';
 import ControlPanel from '../../components/ControlPanel';
 import AnswerPanel from '../../components/AnswerPanel';
+import SecurityQuestionLayout from '../../components/SecurityQuestionLayout';
 import { ExecutionState, TraceStep, ChatContext } from '../../types';
 import { initPyodide, executeWithTrace } from '../../lib/pyodideEngine';
 import { recordAnswer } from '../../lib/answerHistory';
@@ -24,15 +25,6 @@ export default function QuestionPage({ params }: PageProps) {
   const router = useRouter();
   const question = getQuestionById(id);
 
-  const [code, setCode] = useState('');
-  const [state, setState] = useState<ExecutionState>('idle');
-  const [steps, setSteps] = useState<TraceStep[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [output, setOutput] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [isPyodideReady, setIsPyodideReady] = useState(false);
-  const [activeTab, setActiveTab] = useState<'variables' | 'chat'>('variables');
-
   // 問題が見つからない場合
   if (!question) {
     return (
@@ -46,6 +38,26 @@ export default function QuestionPage({ params }: PageProps) {
       </div>
     );
   }
+
+  // 情報セキュリティ問題の場合はシンプルなレイアウトを使用
+  if (question.category === '情報セキュリティ') {
+    return <SecurityQuestionLayout question={question} />;
+  }
+
+  // 以下、アルゴリズム問題用のコーディング環境レイアウト
+  return <AlgorithmQuestionLayout question={question} />;
+}
+
+// アルゴリズム問題用のコンポーネント（既存のロジックを分離）
+function AlgorithmQuestionLayout({ question }: { question: any }) {
+  const [code, setCode] = useState('');
+  const [state, setState] = useState<ExecutionState>('idle');
+  const [steps, setSteps] = useState<TraceStep[]>([]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [output, setOutput] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [isPyodideReady, setIsPyodideReady] = useState(false);
+  const [activeTab, setActiveTab] = useState<'variables' | 'chat'>('variables');
 
   // コードの初期化
   useEffect(() => {
@@ -175,6 +187,7 @@ export default function QuestionPage({ params }: PageProps) {
     questionId: question.id,
     questionTitle: question.title,
     questionDescription: question.description,
+    questionCategory: question.category,
     currentCode: code,
     executionOutput: output || undefined,
     executionError: error || undefined,

@@ -61,6 +61,7 @@ export interface ChatContext {
   questionId: string;
   questionTitle: string;
   questionDescription: string;
+  questionCategory: QuestionCategory; // 問題のカテゴリ
   currentCode: string;
   executionOutput?: string;
   executionError?: string;
