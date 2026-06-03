@@ -1538,6 +1538,210 @@ print(rle("AAA"))     # 期待値: "A3"`,
     explanation: `- 同じ文字が続く場合: count を増やす（空欄a: s[i] == current）
 - 違う文字が来た場合: 現在の current と count を result に追加し、current と count をリセット（空欄b: current = s[i]; count = 1）`,
   },
+  {
+    id: 'book_q1',
+    source: 'original_cat2',
+    year: 2024,
+    category: 'アルゴリズム',
+    subcategory: '配列・マージ',
+    difficulty: '中級',
+    title: '整列済の二つの配列を併合する',
+    description: `次の記述中の **a** と **b** に入れる正しい答えの組合せを、解答群から選べ。ここで、配列の要素番号は1から始まる。
+
+関数 \`merge\` は、引数で与えられた整列済の二つの配列 \`slist1\` と \`slist2\` を併合した一つの配列 \`list\` を返す関数である。
+
+このプログラムは、α及びβで示すwhile文の条件式に繰り返しがあり、正しく動作しない。例えば、関数mergeを \`merge([2, 4, 6, 10, 15], [6, 11, 17, 25])\` に呼び出したとき、配列 **a** の要素番号 **b** の値が配列listに格納されていない。`,
+    pseudoCode: `○配列: merge(整数型の配列: slist1, 整数型の配列: slist2)
+  整数型: num1 ← slist1の要素数
+  整数型: num2 ← slist2の要素数
+  整列型の配列: list ← {(num1 + num2)個の未定義の値}
+  整数型: i ← 1, j ← 1, k ← 1
+  while ((i ≦ num1) and (j ≦ num2))
+    if (slist1[i] < slist2[j])
+      list[k] ← slist1[i]
+      i ← i + 1
+    else
+      list[k] ← slist2[j]
+      j ← j + 1
+    endif
+    k ← k + 1
+  endwhile
+  while (i < num1)  ← α
+    list[k] ← slist1[i]
+    i ← i + 1
+    k ← k + 1
+  endwhile
+  while (j < num2)  ← β
+    list[k] ← slist2[j]
+    j ← j + 1
+    k ← k + 1
+  endwhile
+  return list`,
+    pythonCode: `def merge(slist1, slist2):
+    num1 = len(slist1)
+    num2 = len(slist2)
+    list_result = [None] * (num1 + num2)
+    i, j, k = 0, 0, 0
+
+    # 両方の配列に要素がある間
+    while i < num1 and j < num2:
+        if slist1[i] < slist2[j]:
+            list_result[k] = slist1[i]
+            i += 1
+        else:
+            list_result[k] = slist2[j]
+            j += 1
+        k += 1
+
+    # α: i < num1 では最後の要素が取り残される（バグ）
+    while i < num1:  # 正しくは: i <= num1-1 または i < num1+1
+        list_result[k] = slist1[i]
+        i += 1
+        k += 1
+
+    # β: j < num2 では最後の要素が取り残される（バグ）
+    while j < num2:  # 正しくは: j <= num2-1 または j < num2+1
+        list_result[k] = slist2[j]
+        j += 1
+        k += 1
+
+    return list_result
+
+# テスト（バグを含むため、一部の要素が欠落）
+result = merge([2, 4, 6, 10, 15], [6, 11, 17, 25])
+print(result)  # slist2[3] (= 25) が欠落`,
+    choices: [
+      { id: 'ア', text: 'slist1, 3' },
+      { id: 'イ', text: 'slist1, 5' },
+      { id: 'ウ', text: 'slist2, 1' },
+      { id: 'エ', text: 'slist2, 4' },
+    ],
+    correctAnswer: 'エ',
+    explanation: `merge([2, 4, 6, 10, 15], [6, 11, 17, 25])を実行すると、while文αとβの条件式が \`i < num1\` および \`j < num2\` となっているため、最後の要素（slist1[5]=15とslist2[4]=25）が格納されません。特にslist2の4番目の要素（値25、0-indexedでは[3]）が配列listに格納されていません。正しくは \`i ≦ num1\` および \`j ≦ num2\` とする必要があります。`,
+  },
+  {
+    id: 'book_q2',
+    source: 'original_cat2',
+    year: 2024,
+    category: 'アルゴリズム',
+    subcategory: 'エラトステネスの篩・最適化',
+    difficulty: '上級',
+    title: '自然数nまでの素数を求める',
+    description: `次の記述中の **空欄** に入れる正しい答えを、解答群の中から選べ。ここで、配列の要素番号は1から始まる。
+
+手続き \`primeNumber\` は、整数型の引数 \`n\` (n≥2) を受け取り、2からn中から、素数を全て求める手続である。素数とは、2以上の自然数で、1と自分自身以外では割り切れない数のことである。素数を求める手順は次のように考える。
+
+【素数を求める手順】
+(1) 2以外の2の倍数全てに印を付ける。
+(2) 3以外の3の倍数全てに印を付ける。
+(3) 印が付いているかどうかにかかわらず、4以降、1ずつ増やしながら同様の操作を必要な回数だけ繰り返す。
+(4) 以上の操作後、印が付いていない数が素数である。
+
+上記の手順を基に作成したプログラムを図1に示す。このプログラムでは、素数が素数の場合は、配列primeの要素prime[i]が0に、素数でなければ正の値になる。なお、手続primeNumberが使う関数sqrtは、引数を実数型として受け取った正の根の値を実数型で返すものとする。
+
+手続 \`primeNumber\` を \`primeNumber(25)\` として呼び出したとき、図1の実行回数は27回となる。
+
+図1における行番号08の実行回数を減らすために、for文の中で行われる繰り返し条件を、図2のプログラムの行番号06～12に書き換えた。繰り返し条件が、それ以外の行番号09の実行回数は **空欄** 回となる。`,
+    pseudoCode: `【図1】
+行番号 ○primeNumber(整数型: n)
+01   整数型の配列: prime ← {n個の0}
+02   整数型: m ← sqrt(n) の小数点以下を切り捨てた値
+03   整数型: i, j
+04   for (i を 2 から m まで 1 ずつ増やす)
+05     j ← 2 × i
+06     while (j ≦ n)
+07       prime[j] ← 1
+08       j ← j + i
+09     endwhile
+10   endfor
+11   for (i を 2 から n まで 1 ずつ増やす)
+12     if (prime[i] = 0)
+13       i の値を出力
+14     endif
+15   endfor
+16 endfor
+
+【図2】図1の行番号06～10の書換後
+行番号
+05   for (i を 2 から m まで 1 ずつ増やす)
+06     if (prime[i] = 0)
+07       j ← 2 × i
+08       while (j ≦ n)
+09         prime[j] ← 1
+10         j ← j + i
+11       endwhile
+12     endif
+13   endfor`,
+    pythonCode: `import math
+
+def primeNumber(n):
+    # 0: 素数候補, 1: 素数でない
+    prime = [0] * (n + 1)
+    m = int(math.sqrt(n))
+
+    # 図2のアルゴリズム（最適化版）
+    for i in range(2, m + 1):
+        if prime[i] == 0:  # iが素数の場合のみ
+            j = 2 * i
+            while j <= n:
+                prime[j] = 1
+                j += i
+
+    # 素数を出力
+    primes = []
+    for i in range(2, n + 1):
+        if prime[i] == 0:
+            primes.append(i)
+
+    return primes
+
+# テスト: primeNumber(25)の素数一覧
+result = primeNumber(25)
+print(f"素数: {result}")
+
+# 行番号09の実行回数をカウント
+def primeNumber_with_count(n):
+    prime = [0] * (n + 1)
+    m = int(math.sqrt(n))
+    count = 0  # 行番号09の実行回数
+
+    for i in range(2, m + 1):
+        if prime[i] == 0:
+            j = 2 * i
+            while j <= n:
+                prime[j] = 1
+                j += i
+                count += 1  # 行番号09が実行された
+
+    return count
+
+# primeNumber(25)での行番号09の実行回数
+count_result = primeNumber_with_count(25)
+print(f"行番号09の実行回数: {count_result}回")`,
+    choices: [
+      { id: 'ア', text: '6' },
+      { id: 'イ', text: '9' },
+      { id: 'ウ', text: '11' },
+      { id: 'エ', text: '13' },
+      { id: 'オ', text: '15' },
+      { id: 'カ', text: '17' },
+      { id: 'キ', text: '22' },
+      { id: 'ク', text: '23' },
+      { id: 'ケ', text: '25' },
+      { id: 'コ', text: '27' },
+    ],
+    correctAnswer: 'キ',
+    explanation: `primeNumber(25)を実行すると、m = 5となります。図2のアルゴリズムでは、iが素数（prime[i] == 0）の場合のみ内側のwhileループが実行されます。
+
+- i=2（素数）: j = 4, 6, 8, ..., 24 → 11回
+- i=3（素数）: j = 6, 9, 12, 15, 18, 21, 24 → 7回
+- i=4（素数でない）: スキップ → 0回
+- i=5（素数）: j = 10, 15, 20, 25 → 4回
+
+合計: 11 + 7 + 4 = 22回
+
+したがって、行番号09（prime[j] ← 1の実行）は22回実行されます。`,
+  },
 ];
 
 /**
