@@ -1593,14 +1593,16 @@ print(rle("AAA"))     # 期待値: "A3"`,
             j += 1
         k += 1
 
-    # α: i < num1 では最後の要素が取り残される（バグ）
-    while i < num1:  # 正しくは: i <= num1-1 または i < num1+1
+    # α: バグ - 最後の要素が取り残される
+    # 擬似言語の "i < num1" を再現するため、Pythonでは "i < num1 - 1" とする
+    while i < num1 - 1:
         list_result[k] = slist1[i]
         i += 1
         k += 1
 
-    # β: j < num2 では最後の要素が取り残される（バグ）
-    while j < num2:  # 正しくは: j <= num2-1 または j < num2+1
+    # β: バグ - 最後の要素が取り残される
+    # 擬似言語の "j < num2" を再現するため、Pythonでは "j < num2 - 1" とする
+    while j < num2 - 1:
         list_result[k] = slist2[j]
         j += 1
         k += 1
@@ -1609,7 +1611,9 @@ print(rle("AAA"))     # 期待値: "A3"`,
 
 # テスト（バグを含むため、一部の要素が欠落）
 result = merge([2, 4, 6, 10, 15], [6, 11, 17, 25])
-print(result)  # slist2[3] (= 25) が欠落`,
+print(result)
+# バグのため slist1[4] (= 15) と slist2[3] (= 25) が欠落
+# 期待される出力: [2, 4, 6, 6, 10, 11, 17, None, None]`,
     choices: [
       { id: 'ア', text: 'slist1, 3' },
       { id: 'イ', text: 'slist1, 5' },
@@ -1617,7 +1621,7 @@ print(result)  # slist2[3] (= 25) が欠落`,
       { id: 'エ', text: 'slist2, 4' },
     ],
     correctAnswer: 'エ',
-    explanation: `merge([2, 4, 6, 10, 15], [6, 11, 17, 25])を実行すると、while文αとβの条件式が \`i < num1\` および \`j < num2\` となっているため、最後の要素（slist1[5]=15とslist2[4]=25）が格納されません。特にslist2の4番目の要素（値25、0-indexedでは[3]）が配列listに格納されていません。正しくは \`i ≦ num1\` および \`j ≦ num2\` とする必要があります。`,
+    explanation: `擬似言語では配列が1始まりなので、while文αとβの条件式が \`i < num1\` および \`j < num2\` だと最後の要素が処理されません。merge([2, 4, 6, 10, 15], [6, 11, 17, 25])を実行すると、slist1[5]=15 と slist2[4]=25（1始まりの4番目）が格納されません。正しくは \`i ≦ num1\` および \`j ≦ num2\` とする必要があります。Pythonでは0始まりなので、このバグを再現するため \`i < num1 - 1\` および \`j < num2 - 1\` としています。`,
   },
   {
     id: 'book_q2',
